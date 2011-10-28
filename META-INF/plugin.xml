@@ -1,0 +1,45 @@
+<!--
+  ~ Copyright (c) 2011-2011. Maarten Hazewinkel
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<idea-plugin version="2">
+  <name>PListEditor</name>
+  <description>A custom editor for Apple .plist files</description>
+  <version>0.6</version>
+  <vendor>Maarten Hazewinkel</vendor>
+  <idea-version since-build="108.1333"/>
+  <depends>com.intellij.modules.platform</depends>
+
+  <application-components>
+      <component>
+        <interface-class>com.mac.hazewinkel.plist.fileTypes.PListFileTypeManager</interface-class>
+        <implementation-class>com.mac.hazewinkel.plist.fileTypes.impl.PListFileTypeManagerImpl</implementation-class>
+      </component>
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+      <fileTypeFactory implementation="com.mac.hazewinkel.plist.fileTypes.impl.PListFileTypeManagerImpl" />
+      <fileEditorProvider implementation="com.mac.hazewinkel.plist.editor.impl.PListEditorProvider"/>
+      <fileDocumentManagerListener implementation="com.mac.hazewinkel.plist.editor.impl.PListSaveTrigger"/>
+  </extensions>
+</idea-plugin>
