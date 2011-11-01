@@ -9,6 +9,7 @@ always show editor add/remove buttons. Show on hover is unreliable
 always show disclosure triangle on aggregates. Now hides if empty aggregate is folded open
 
 prevent changing root type to non-aggregate for JSON storage format
+DONE 2011-11-01
 
 retain node expansion status across editor invocations
 
