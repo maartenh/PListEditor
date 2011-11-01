@@ -52,17 +52,23 @@ public class PListEditor {
     PListJXTreeTableModel treeTableModel;
 
     static String[] typeValues;
+    static String[] aggregateTypeValues;
 
     static {
         ArrayList<String> typeValuesList = new ArrayList<String>(PListDataType.values().length);
+        ArrayList<String> aggregateTypeValuesList = new ArrayList<String>(PListDataType.values().length);
         for (PListDataType pListDataType : PListDataType.values()) {
             typeValuesList.add(pListDataType.name());
+            if (pListDataType.createDataTypeInstance() instanceof PListAggregate) {
+                aggregateTypeValuesList.add(pListDataType.name());
+            }
         }
         typeValues = typeValuesList.toArray(new String[typeValuesList.size()]);
+        aggregateTypeValues = aggregateTypeValuesList.toArray(new String[aggregateTypeValuesList.size()]);
     }
 
-    public PListEditor(byte[] bytes, Project project) {
-        loadPList(bytes);
+    public PListEditor(byte[] bytes, PListFormat storageFormat, Project project) {
+        loadPList(bytes, storageFormat);
         treeTableModel = new PListJXTreeTableModel(plist, project);
         plistTree = new MyJXTreeTable(treeTableModel);
         plistTree.setClosedIcon(null);
@@ -77,15 +83,7 @@ public class PListEditor {
         plistTree.setSortable(false);
 
         plistTree.setDefaultRenderer(String[].class, new ComboBoxTableRenderer<String>(typeValues));
-        plistTree.setDefaultEditor(String[].class, new ComboBoxTableRenderer<String>(typeValues) {
-            @Override
-            public boolean isCellEditable(EventObject event) {
-                if (event instanceof MouseEvent) {
-                    return ((MouseEvent) event).getClickCount() >= 1;
-                }
-                return super.isCellEditable(event);
-            }
-        });
+        plistTree.setDefaultEditor(String[].class, new StringComboBoxTableRenderer(typeValues));
 
         plistTree.setDefaultRenderer(String.class, new MyStringTableCellRenderer());
         plistTree.setDefaultEditor(String.class, new MyStringTableCellEditor(project, plistTree));
@@ -93,12 +91,13 @@ public class PListEditor {
         mainComponent = ScrollPaneFactory.createScrollPane(plistTree);
     }
 
-    private void loadPList(byte[] bytes) {
+    private void loadPList(byte[] bytes, PListFormat storageFormat) {
         if (bytes.length == 0) {
             plist = new PListRoot(new PListDictionary());
             return;
         }
         plist = PListConversionUtil.parseToPList(bytes);
+        plist.setStorageFormat(storageFormat);
     }
 
     public JComponent getComponent() {
@@ -150,6 +149,11 @@ public class PListEditor {
 
         @Override
         public TableCellEditor getCellEditor(int row, int column) {
+            if (row == 0 && column == 1
+                    && treeTableModel.getPlist().getStorageFormat().equals(PListFormat.FORMAT_JSON)) {
+               return new StringComboBoxTableRenderer(aggregateTypeValues);
+            }
+
             TableCellEditor defaultCellEditor = super.getCellEditor(row, column);
             if (isHierarchical(column)) {
                 JTree tree = (JTree) getCellRenderer(row ,getHierarchicalColumn());
@@ -334,6 +338,20 @@ public class PListEditor {
             setPaintFocusBorder(false);
             setFont(UIManager.getFont("TextField.font"));
             append((String) value, new SimpleTextAttributes(Font.PLAIN, null));
+        }
+    }
+
+    private static class StringComboBoxTableRenderer extends ComboBoxTableRenderer<String> {
+        public StringComboBoxTableRenderer(String[] typeValues) {
+            super(typeValues);
+        }
+
+        @Override
+        public boolean isCellEditable(EventObject event) {
+            if (event instanceof MouseEvent) {
+                return ((MouseEvent) event).getClickCount() >= 1;
+            }
+            return super.isCellEditable(event);
         }
     }
 }

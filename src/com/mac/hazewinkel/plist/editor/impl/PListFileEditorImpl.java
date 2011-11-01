@@ -65,7 +65,7 @@ public class PListFileEditorImpl extends UserDataHolderBase implements PListFile
             fileContent = new byte[0];
         }
 
-        this.editor = new PListEditor(fileContent, project);
+        this.editor = new PListEditor(fileContent, storageFormat, project);
 
         openEditors.add(this);
     }

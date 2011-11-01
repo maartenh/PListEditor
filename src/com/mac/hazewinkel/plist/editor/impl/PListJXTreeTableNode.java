@@ -17,6 +17,7 @@
 package com.mac.hazewinkel.plist.editor.impl;
 
 import com.mac.hazewinkel.plist.datamodel.*;
+import com.mac.hazewinkel.plist.util.PListFormat;
 
 import javax.swing.tree.TreeNode;
 import java.util.Collections;
@@ -157,6 +158,13 @@ public class PListJXTreeTableNode implements TreeNode {
 
     public boolean changeType(String value) {
         PList newData = PListDataType.valueOf(value).createDataTypeInstance();
+
+        if (plist instanceof PListRoot
+                && newData instanceof PListPrimitive
+                && ((PListRoot) plist).getStorageFormat().equals(PListFormat.FORMAT_JSON)) {
+            return false;
+        }
+
         try {
             if (newData instanceof PListPrimitive && plist instanceof PListPrimitive) {
                 ((PListPrimitive) newData).setAsString(plist.getAsString());

@@ -28,11 +28,13 @@ import javax.swing.tree.DefaultTreeModel;
 public class PListJXTreeTableModel extends DefaultTreeModel implements TreeTableModel {
 
     private boolean modified;
+    private PListRoot plist;
     private Project project;
     private PListColumnInfo[] columns;
 
     public PListJXTreeTableModel(PListRoot plist, Project project) {
         super(new PListJXTreeTableNode(plist), true);
+        this.plist = plist;
         this.project = project;
         this.columns = getPListColumns(project);
     }
@@ -83,6 +85,10 @@ public class PListJXTreeTableModel extends DefaultTreeModel implements TreeTable
 
     public Project getProject() {
         return project;
+    }
+
+    public PListRoot getPlist() {
+        return plist;
     }
 
     public static abstract class PListColumnInfo {

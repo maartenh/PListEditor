@@ -16,6 +16,8 @@
 
 package com.mac.hazewinkel.plist.datamodel;
 
+import com.mac.hazewinkel.plist.util.PListFormat;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +27,7 @@ import java.util.List;
 public class PListRoot extends PListAggregate {
 
     private PList rootValue;
+    private PListFormat storageFormat;
 
     public PListRoot(PList rootValue) {
 
@@ -72,5 +75,13 @@ public class PListRoot extends PListAggregate {
 
     public PList getRootValue() {
         return rootValue;
+    }
+
+    public void setStorageFormat(PListFormat storageFormat) {
+        this.storageFormat = storageFormat;
+    }
+
+    public PListFormat getStorageFormat() {
+        return storageFormat;
     }
 }
