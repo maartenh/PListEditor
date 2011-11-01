@@ -25,10 +25,7 @@ import com.intellij.ui.ColoredTableCellRenderer;
 import com.intellij.ui.EditorTextField;
 import com.intellij.ui.ScrollPaneFactory;
 import com.intellij.ui.SimpleTextAttributes;
-import com.mac.hazewinkel.plist.datamodel.PList;
-import com.mac.hazewinkel.plist.datamodel.PListArray;
-import com.mac.hazewinkel.plist.datamodel.PListDataType;
-import com.mac.hazewinkel.plist.datamodel.PListDictionary;
+import com.mac.hazewinkel.plist.datamodel.*;
 import com.mac.hazewinkel.plist.util.PListConversionUtil;
 import com.mac.hazewinkel.plist.util.PListFormat;
 import org.jdesktop.swingx.JXTreeTable;
@@ -49,7 +46,7 @@ import java.util.EventObject;
 public class PListEditor {
     public static final Insets ZERO_INSETS = new Insets(0, 2, 0, 0);
     private JScrollPane mainComponent;
-    private PList plist = null;
+    private PListRoot plist = null;
 
     private JXTreeTable plistTree;
     PListJXTreeTableModel treeTableModel;
@@ -98,7 +95,7 @@ public class PListEditor {
 
     private void loadPList(byte[] bytes) {
         if (bytes.length == 0) {
-            plist = new PListDictionary();
+            plist = new PListRoot(new PListDictionary());
             return;
         }
         plist = PListConversionUtil.parseToPList(bytes);
@@ -121,7 +118,7 @@ public class PListEditor {
     }
 
     public boolean isValidForFormat(PListFormat format) {
-        return !PListFormat.FORMAT_JSON.equals(format) || plist instanceof PListDictionary || plist instanceof PListArray;
+        return !PListFormat.FORMAT_JSON.equals(format) || plist.getRootValue() instanceof PListDictionary || plist.getRootValue() instanceof PListArray;
     }
 
     public void setModified(boolean b) {

@@ -17,13 +17,10 @@
 package com.mac.hazewinkel.plist.editor.impl;
 
 import com.intellij.openapi.project.Project;
-import com.mac.hazewinkel.plist.datamodel.PList;
-import com.mac.hazewinkel.plist.datamodel.PListDataType;
+import com.mac.hazewinkel.plist.datamodel.PListRoot;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
-import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
-import java.util.ArrayList;
 
 /**
  * @author Maarten Hazewinkel
@@ -31,13 +28,11 @@ import java.util.ArrayList;
 public class PListJXTreeTableModel extends DefaultTreeModel implements TreeTableModel {
 
     private boolean modified;
-    private PList plist;
     private Project project;
     private PListColumnInfo[] columns;
 
-    public PListJXTreeTableModel(PList plist, Project project) {
+    public PListJXTreeTableModel(PListRoot plist, Project project) {
         super(new PListJXTreeTableNode(plist), true);
-        this.plist = plist;
         this.project = project;
         this.columns = getPListColumns(project);
     }

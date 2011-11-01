@@ -102,7 +102,7 @@ public class PListXmlWriterTest {
 
         plist.append(new PListEntry("Version", new PListInteger(1)));
 
-        byte[] xmlData = PListConversionUtil.exportPListToXml(plist);
+        byte[] xmlData = PListConversionUtil.exportPListToXml(new PListRoot(plist));
         byte[] xml1Data = PListConversionUtil.convertPlistToFormat(xmlData, PListFormat.FORMAT_XML1);
 
         assertEquals(writeXmlExpectedResult, new String(xml1Data, "UTF-8"));

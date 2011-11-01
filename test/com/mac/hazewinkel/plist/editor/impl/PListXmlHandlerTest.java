@@ -209,40 +209,40 @@ public class PListXmlHandlerTest {
 
     @Test
     public void testParseBoolean() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseBooleanSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseBooleanSource.getBytes("UTF-8")).getRootValue();
         assertEquals(new PListBoolean(true), plist);
         assertFalse(new PListBoolean(false).equals(plist));
     }
 
     @Test
     public void testParseData() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseDataSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseDataSource.getBytes("UTF-8")).getRootValue();
         byte[] expectedBytes = {0x3c, 0x42, (byte) 0x81, (byte) 0xa5, (byte) 0x81, (byte) 0xa5, (byte) 0x99, (byte) 0x81, 0x42, 0x3c};
         assertEquals(new PListData(expectedBytes), plist);
     }
 
     @Test
     public void testParseLongData() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseLongDataSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseLongDataSource.getBytes("UTF-8")).getRootValue();
         assertEquals(new PListData(longDataValue), plist);
     }
 
     @Test
     public void testParseDate() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseDateSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseDateSource.getBytes("UTF-8")).getRootValue();
         Date expectedDate = new GregorianCalendar(2011, 3, 12, 7, 21, 33).getTime();
         assertEquals(new PListDate(expectedDate), plist);
     }
 
     @Test
     public void testParseFloat() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseRealSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseRealSource.getBytes("UTF-8")).getRootValue();
         assertEquals(new PListFloat(317035088.45302403), plist);
     }
 
     @Test
     public void testParseInteger() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseIntegerSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseIntegerSource.getBytes("UTF-8")).getRootValue();
         assertEquals(new PListInteger(14), plist);
         assertFalse(new PListInteger(13).equals(plist));
         assertFalse(new PListFloat(14).equals(plist));
@@ -250,19 +250,19 @@ public class PListXmlHandlerTest {
 
     @Test
     public void testParseString() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseStringSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseStringSource.getBytes("UTF-8")).getRootValue();
         assertEquals(new PListString("2.2.1"), plist);
     }
 
     @Test
     public void testParseEmptyArray() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseEmptyArraySource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseEmptyArraySource.getBytes("UTF-8")).getRootValue();
         assertEquals(new PListArray(), plist);
     }
 
     @Test
     public void testParseFilledArray() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseFilledArraySource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseFilledArraySource.getBytes("UTF-8")).getRootValue();
         PListArray expected = new PListArray();
         expected.append(new PListEntry(null, new PListInteger(14)));
         expected.append(new PListEntry(null, new PListInteger(21)));
@@ -272,13 +272,13 @@ public class PListXmlHandlerTest {
 
     @Test
     public void testParseEmptyDict() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseEmptyDictSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseEmptyDictSource.getBytes("UTF-8")).getRootValue();
         assertEquals(new PListDictionary(), plist);
     }
 
     @Test
     public void testParseFilledDict() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parseFilledDictSource.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parseFilledDictSource.getBytes("UTF-8")).getRootValue();
         PListDictionary expected = new PListDictionary();
         expected.append(new PListEntry("value1", new PListInteger(14)));
         expected.append(new PListEntry("value2", new PListInteger(21)));
@@ -288,7 +288,7 @@ public class PListXmlHandlerTest {
 
     @Test
     public void testParse1() throws UnsupportedEncodingException {
-        PList plist = PListConversionUtil.parseToPList(parse1source.getBytes("UTF-8"));
+        PList plist = PListConversionUtil.parseToPList(parse1source.getBytes("UTF-8")).getRootValue();
         PListDictionary expected = new PListDictionary();
 
         PListDictionary dict = new PListDictionary();

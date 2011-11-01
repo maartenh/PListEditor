@@ -39,23 +39,23 @@ public class PListDictionary extends PListAggregate {
     }
 
     @Override
-    public void replaceEntry(PList olddata, PList newdata) {
+    public void replaceEntry(PList oldData, PList newData) {
         ListIterator<PListEntry> iterator = dictionary.listIterator();
         while (iterator.hasNext()) {
             PListEntry oldEntry = iterator.next();
-            if (oldEntry.getValue() == olddata) {
-                iterator.set(new PListEntry(oldEntry.getKey(), newdata));
+            if (oldEntry.getValue() == oldData) {
+                iterator.set(new PListEntry(oldEntry.getKey(), newData));
                 return;
             }
         }
     }
 
     @Override
-    public void deleteEntry(PList olddata) {
+    public void deleteEntry(PList oldData) {
         ListIterator<PListEntry> iterator = dictionary.listIterator();
         while (iterator.hasNext()) {
             PListEntry oldEntry = iterator.next();
-            if (oldEntry.getValue() == olddata) {
+            if (oldEntry.getValue() == oldData) {
                 iterator.remove();
                 return;
             }

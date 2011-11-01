@@ -2,6 +2,13 @@
 new plist file action
 
 add row to new blank plist file. context menu item.
+DONE 2011-11-01. Now showing root item, so can do this with editor buttons.
+
+always show editor add/remove buttons. Show on hover is unreliable
+
+always show disclosure triangle on aggregates. Now hides if empty aggregate is folded open
+
+prevent changing root type to non-aggregate for JSON storage format
 
 retain node expansion status across editor invocations
 

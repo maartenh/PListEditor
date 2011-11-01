@@ -42,21 +42,21 @@ public class PListArray extends PListAggregate {
     }
 
     @Override
-    public void replaceEntry(PList olddata, PList newdata) {
+    public void replaceEntry(PList oldData, PList newData) {
         ListIterator<PList> iterator = array.listIterator();
         while (iterator.hasNext()) {
-            if (iterator.next() == olddata) {
-                iterator.set(newdata);
+            if (iterator.next() == oldData) {
+                iterator.set(newData);
                 return;
             }
         }
     }
 
     @Override
-    public void deleteEntry(PList olddata) {
+    public void deleteEntry(PList oldData) {
         ListIterator<PList> iterator = array.listIterator();
         while (iterator.hasNext()) {
-            if (iterator.next() == olddata) {
+            if (iterator.next() == oldData) {
                 iterator.remove();
                 return;
             }

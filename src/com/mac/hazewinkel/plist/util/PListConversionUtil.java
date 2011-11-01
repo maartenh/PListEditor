@@ -16,7 +16,7 @@
 
 package com.mac.hazewinkel.plist.util;
 
-import com.mac.hazewinkel.plist.datamodel.PList;
+import com.mac.hazewinkel.plist.datamodel.PListRoot;
 import org.jetbrains.annotations.NonNls;
 
 import javax.xml.parsers.SAXParser;
@@ -116,7 +116,7 @@ public class PListConversionUtil implements Cloneable {
         }
     }
 
-    public static PList parseToPList(byte[] xmlContent) {
+    public static PListRoot parseToPList(byte[] xmlContent) {
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         parserFactory.setValidating(false);
         SAXParser parser;
@@ -125,17 +125,17 @@ public class PListConversionUtil implements Cloneable {
             PListXmlHandler xmlHandler = new PListXmlHandler();
             parser.parse(new ByteArrayInputStream(xmlContent), xmlHandler);
 
-            return xmlHandler.getPList();
+            return new PListRoot(xmlHandler.getPList());
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             throw new IllegalArgumentException("Cannot parse xml: " + e.getMessage());
         }
     }
 
-    public static byte[] exportPListToXml(PList plist) {
+    public static byte[] exportPListToXml(PListRoot plist) {
         StringBuilder buffer = new StringBuilder();
         buffer.append(XML1_PREFIX);
-        new PListXmlWriter().write(plist, buffer);
+        new PListXmlWriter().write(plist.getRootValue(), buffer);
         buffer.append("</plist>\n");
 
         try {

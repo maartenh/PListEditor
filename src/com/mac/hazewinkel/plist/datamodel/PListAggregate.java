@@ -28,16 +28,13 @@ public abstract class PListAggregate extends PList {
     @Override
     public String getAsString() {
         int count = elements().size();
-        String multi = "s";
-        if (count == 1) {
-            multi = "";
-        }
-        return "(" + count + " item" + multi + ")";
+        String multipleExtension = (count == 1) ? "" : "s";
+        return "(" + count + " item" + multipleExtension + ")";
     }
 
-    public abstract void replaceEntry(PList olddata, PList newdata);
+    public abstract void replaceEntry(PList oldData, PList newData);
 
-    public abstract void deleteEntry(PList olddata);
+    public abstract void deleteEntry(PList oldData);
 
     public abstract void insertFirstChild(PList newValue);
 

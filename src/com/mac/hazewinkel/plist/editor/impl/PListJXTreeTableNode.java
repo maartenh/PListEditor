@@ -156,14 +156,14 @@ public class PListJXTreeTableNode implements TreeNode {
     }
 
     public boolean changeType(String value) {
-        PList newdata = PListDataType.valueOf(value).createDataTypeInstance();
+        PList newData = PListDataType.valueOf(value).createDataTypeInstance();
         try {
-            if (newdata instanceof PListPrimitive && plist instanceof PListPrimitive) {
-                ((PListPrimitive) newdata).setAsString(plist.getAsString());
+            if (newData instanceof PListPrimitive && plist instanceof PListPrimitive) {
+                ((PListPrimitive) newData).setAsString(plist.getAsString());
             }
         } catch (IllegalArgumentException ignored) {
         }
-        ((PListAggregate) parent.plist).replaceEntry(plist, newdata);
+        ((PListAggregate) parent.plist).replaceEntry(plist, newData);
         return true;
     }
 
