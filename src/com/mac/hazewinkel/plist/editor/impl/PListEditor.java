@@ -36,7 +36,6 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.EventObject;
 
@@ -48,7 +47,7 @@ public class PListEditor {
     private JScrollPane mainComponent;
     private PListRoot plist = null;
 
-    private JXTreeTable plistTree;
+    private MyJXTreeTable plistTree;
     PListJXTreeTableModel treeTableModel;
 
     static String[] typeValues;
@@ -89,6 +88,7 @@ public class PListEditor {
         plistTree.setDefaultEditor(String.class, new MyStringTableCellEditor(project, plistTree));
 
         mainComponent = ScrollPaneFactory.createScrollPane(plistTree);
+        plistTree.setScrollView(mainComponent);
     }
 
     private void loadPList(byte[] bytes, PListFormat storageFormat) {
@@ -127,12 +127,11 @@ public class PListEditor {
     private static class MyJXTreeTable extends JXTreeTable {
         private MyStringTableCellEditor treeColumnEditor;
 
-        boolean showPlusMinus = false;
         boolean plusDown = false;
         boolean minusDown = false;
-        int currentMouseRow = -1;
         int downRow = -1;
         private PListJXTreeTableModel treeTableModel;
+        private JScrollPane scrollView;
 
         public MyJXTreeTable(PListJXTreeTableModel treeTableModel) {
             super(treeTableModel);
@@ -164,22 +163,6 @@ public class PListEditor {
         }
 
         {
-            addMouseMotionListener(new MouseMotionListener() {
-                public void mouseDragged(MouseEvent e) {}
-
-                public void mouseMoved(MouseEvent e) {
-                    //System.out.println(e);
-                    int x = e.getX();
-                    int maxX = getColumn(0).getWidth();
-                    boolean oldShow = showPlusMinus;
-                    int oldRow = currentMouseRow;
-                    currentMouseRow = e.getY() / getRowHeight();
-                    showPlusMinus = x < maxX && x >= maxX - 36 && currentMouseRow < getRowCount();
-                    if (oldShow != showPlusMinus || oldRow != currentMouseRow) {
-                        repaint();
-                    }
-                }
-            });
             addMouseListener(new MouseListener() {
                 public void mouseClicked(MouseEvent e) {
                 }
@@ -187,14 +170,11 @@ public class PListEditor {
                 public void mousePressed(MouseEvent e) {
                     int x = e.getX();
                     int maxX = getColumn(0).getWidth();
-                    boolean oldShow = showPlusMinus;
-                    int oldRow = currentMouseRow;
-                    currentMouseRow = e.getY() / getRowHeight();
-                    showPlusMinus = x < maxX && x >= maxX - 36 && currentMouseRow < getRowCount();
+                    int currentMouseRow = e.getY() / getRowHeight();
                     plusDown = x < maxX - 19 && x >= maxX - 35 && currentMouseRow < getRowCount();
                     minusDown = x < maxX - 1 && x >= maxX - 17 && currentMouseRow < getRowCount();
                     downRow = currentMouseRow;
-                    if (oldShow != showPlusMinus || oldRow != currentMouseRow || plusDown || minusDown) {
+                    if (plusDown || minusDown) {
                         repaint();
                     }
                 }
@@ -203,8 +183,7 @@ public class PListEditor {
                     if (plusDown || minusDown) {
                         int x = e.getX();
                         int maxX = getColumn(0).getWidth();
-                        currentMouseRow = e.getY() / getRowHeight();
-                        showPlusMinus = x < maxX && x >= maxX - 36 && currentMouseRow < getRowCount();
+                        int currentMouseRow = e.getY() / getRowHeight();
                         if (plusDown && x < maxX - 19 && x >= maxX - 35 && currentMouseRow == downRow) {
                             addRow(currentMouseRow);
                         } else if (minusDown && x < maxX - 1 && x >= maxX - 17 && currentMouseRow == downRow) {
@@ -221,11 +200,9 @@ public class PListEditor {
                 }
 
                 public void mouseExited(MouseEvent e) {
-                    if (showPlusMinus && e.getClickCount() == 0) {
-                        showPlusMinus = false;
+                    if (e.getClickCount() == 0) {
                         plusDown = false;
                         minusDown = false;
-                        currentMouseRow = -1;
                         repaint();
                     }
                 }
@@ -257,21 +234,29 @@ public class PListEditor {
         @Override
         public void paint(Graphics g) {
             super.paint(g);
-            if (showPlusMinus) {
+            int firstRow = rowAtPoint(scrollView.getViewport().getViewPosition());
+            int lastRow = rowAtPoint(new Point(0, scrollView.getViewport().getHeight() + scrollView.getViewport().getViewPosition().y));
+            if (firstRow == -1) {
+                firstRow = 0;
+            }
+            if (lastRow == -1) {
+                lastRow = getRowCount() -1;
+            }
+            for (int currentRow = firstRow; currentRow <= lastRow; currentRow++) {
                 int x = getColumn(0).getWidth() - 35;
-                int y = currentMouseRow * getRowHeight() + 1;
+                int y = currentRow * getRowHeight() + 1;
 
                 // Enable this if using non-alpha button images. Looks ugly otherwise.
                 // g.setColor(getBackground());
                 // g.fillRect(x - 1, y - 1, 36, getRowHeight());
                 
-                if (plusDown) {
+                if (plusDown && downRow == currentRow) {
                     plusPressed.paintIcon(null, g, x, y);
                 } else {
                     plusNormal.paintIcon(null, g, x, y);
                 }
                 x += 18;
-                if (minusDown) {
+                if (minusDown && downRow == currentRow) {
                     minusPressed.paintIcon(null, g, x, y);
                 } else {
                     minusNormal.paintIcon(null, g, x, y);
@@ -283,6 +268,10 @@ public class PListEditor {
         private static final Icon plusPressed = IconLoader.getIcon("/com/mac/hazewinkel/plist/editor/impl/plus-pressed-alpha.png");
         private static final Icon minusNormal = IconLoader.getIcon("/com/mac/hazewinkel/plist/editor/impl/minus-normal-alpha.png");
         private static final Icon minusPressed = IconLoader.getIcon("/com/mac/hazewinkel/plist/editor/impl/minus-pressed-alpha.png");
+
+        public void setScrollView(JScrollPane scrollView) {
+            this.scrollView = scrollView;
+        }
     }
 
     public static class MyStringTableCellEditor extends AbstractCellEditor implements TableCellEditor {
