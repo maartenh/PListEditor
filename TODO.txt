@@ -8,6 +8,7 @@ always show editor add/remove buttons. Show on hover is unreliable
 DONE 2011-11-02.
 
 always show disclosure triangle on aggregates. Now hides if empty aggregate is folded open
+DONE 2011-11-02. Limited to com.apple.laf.AquaTreeUI only. Known limitation: Empty open node will not close.
 
 prevent changing root type to non-aggregate for JSON storage format
 DONE 2011-11-01.

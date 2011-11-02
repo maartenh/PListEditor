@@ -16,6 +16,7 @@
 
 package com.mac.hazewinkel.plist.editor.impl;
 
+import com.apple.laf.AquaTreeUI;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
@@ -137,6 +138,11 @@ public class PListEditor {
             super(treeTableModel);
             this.treeTableModel = treeTableModel;
             treeColumnEditor = new MyStringTableCellEditor(treeTableModel.getProject(), this);
+            
+            JTree tree = (JTree) getCellRenderer(0 ,getHierarchicalColumn());
+            if (tree.getUI() instanceof AquaTreeUI) {
+                tree.setUI(new MyAquaTreeUI());
+            }
         }
 
         @Override
@@ -277,10 +283,10 @@ public class PListEditor {
     public static class MyStringTableCellEditor extends AbstractCellEditor implements TableCellEditor {
         private Document myDocument;
         private final Project myProject;
-        private JXTreeTable treeTable;
+        private MyJXTreeTable treeTable;
         private int treeIndent;
 
-        public MyStringTableCellEditor(final Project project, JXTreeTable treeTable) {
+        public MyStringTableCellEditor(final Project project, MyJXTreeTable treeTable) {
             myProject = project;
             this.treeTable = treeTable;
         }
