@@ -13,9 +13,13 @@ DONE 2011-11-02. Limited to com.apple.laf.AquaTreeUI only. Known limitation: Emp
 prevent changing root type to non-aggregate for JSON storage format
 DONE 2011-11-01.
 
+limit plugin to AppCode only
+
 retain node expansion status across editor invocations
 
 auto-reload changed file from disk
+
+context menu in editor to switch storage format
 
 auto-edit name of newly inserted row?
 
@@ -26,3 +30,4 @@ integrate with undo management
 auto-complete for known plist types such as application Info.plist
 includes completing names, more descriptive name alternatives and setting the structure of the node/subnodes according to pre-defined structures.
 
+rework editor to use custom component
