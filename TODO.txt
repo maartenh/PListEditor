@@ -13,7 +13,8 @@ DONE 2011-11-02. Limited to com.apple.laf.AquaTreeUI only. Known limitation: Emp
 prevent changing root type to non-aggregate for JSON storage format
 DONE 2011-11-01.
 
-limit plugin to AppCode only
+limit plugin to AppCode only.
+requires OC-2378.
 
 retain node expansion status across editor invocations
 
