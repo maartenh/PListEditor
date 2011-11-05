@@ -27,6 +27,9 @@
         <interface-class>com.mac.hazewinkel.plist.fileTypes.PListFileTypeManager</interface-class>
         <implementation-class>com.mac.hazewinkel.plist.fileTypes.impl.PListFileTypeManagerImpl</implementation-class>
       </component>
+      <component>
+          <implementation-class>com.mac.hazewinkel.plist.fileTypes.NewPListFileTemplate</implementation-class>
+      </component>
   </application-components>
 
   <project-components>

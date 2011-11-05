@@ -1,5 +1,6 @@
 
 new plist file action
+DONE 2011-11-05. Implemented simply as a template.
 
 add row to new blank plist file. context menu item.
 DONE 2011-11-01. Now showing root item, so can do this with editor buttons.

@@ -16,14 +16,10 @@
 
 package com.mac.hazewinkel.plist.fileTypes.impl;
 
-import com.intellij.codeInsight.editorActions.TypedHandler;
-import com.intellij.ide.IdeBundle;
-import com.intellij.ide.highlighter.DomSupportEnabled;
-import com.intellij.ide.highlighter.XmlFileType;
-import com.intellij.ide.highlighter.XmlLikeFileType;
-import com.intellij.lang.xml.XMLLanguage;
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.fileTypes.*;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.mac.hazewinkel.plist.PListBundle;
@@ -95,7 +91,7 @@ public class PListFileTypeManagerImpl extends PListFileTypeManager implements Ap
         }
 
         public boolean isBinary() {
-            return true;
+            return false;
         }
 
         public boolean isReadOnly() {

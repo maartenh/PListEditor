@@ -66,7 +66,7 @@ public class PListEditorProvider implements FileEditorProvider, DumbAware {
 
     @NotNull
     public FileEditorPolicy getPolicy() {
-        return FileEditorPolicy.PLACE_AFTER_DEFAULT_EDITOR;
+        return FileEditorPolicy.HIDE_DEFAULT_EDITOR;
     }
 
 }

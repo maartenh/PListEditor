@@ -16,6 +16,7 @@
 
 package com.mac.hazewinkel.plist.util;
 
+import com.intellij.openapi.diagnostic.Log;
 import com.mac.hazewinkel.plist.datamodel.PListRoot;
 import org.jetbrains.annotations.NonNls;
 
@@ -33,8 +34,10 @@ import java.util.TimeZone;
  */
 public class PListConversionUtil implements Cloneable {
     @NonNls
-    private static final String XML1_PREFIX = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" +
+    private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    @NonNls
+    private static final String XML1_PREFIX = XML_HEADER + "\n" +
+            "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" +
             "<plist version=\"1.0\">\n";
 
     @NonNls
@@ -55,7 +58,7 @@ public class PListConversionUtil implements Cloneable {
             // ignore. UTF-8 support is required.
             return PListFormat.FORMAT_OTHER;
         }
-        if (fileText.startsWith(XML1_PREFIX))
+        if (fileText.startsWith(XML_HEADER))
             return PListFormat.FORMAT_XML1;
         else if (fileText.startsWith(BINARY1_PREFIX))
             return PListFormat.FORMAT_BINARY1;
@@ -79,9 +82,10 @@ public class PListConversionUtil implements Cloneable {
             InputStream inputStream = converter.getInputStream();
 
             boolean finished = false;
+            int exitcode = -1;
             do {
                 try {
-                    converter.waitFor();
+                    exitcode = converter.waitFor();
                     finished = true;
                 } catch (InterruptedException e) {
                     // ignore, simply retry the wait
@@ -109,9 +113,14 @@ public class PListConversionUtil implements Cloneable {
                 System.arraycopy(chunk, 0, convertedContent, copiedPosition, chunk.length);
                 copiedPosition += chunk.length;
             }
+            
+            if (exitcode != 0) {
+                Log.print("PListConversionUtil failed to convert data. Error: " + new String(convertedContent));
+                return new byte[0];
+            }
             return convertedContent;
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            Log.print("PListConversionUtil failed to convert data. Exception: " + e.toString(), true);
             return new byte[0];
         }
     }
@@ -127,8 +136,7 @@ public class PListConversionUtil implements Cloneable {
 
             return new PListRoot(xmlHandler.getPList());
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            throw new IllegalArgumentException("Cannot parse xml: " + e.getMessage());
+            throw new IllegalArgumentException("Cannot parse xml: " + e.getMessage(), e);
         }
     }
 

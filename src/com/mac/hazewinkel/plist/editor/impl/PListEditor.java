@@ -95,6 +95,7 @@ public class PListEditor {
     private void loadPList(byte[] bytes, PListFormat storageFormat) {
         if (bytes.length == 0) {
             plist = new PListRoot(new PListDictionary());
+            plist.setStorageFormat(PListFormat.FORMAT_XML1);
             return;
         }
         plist = PListConversionUtil.parseToPList(bytes);
