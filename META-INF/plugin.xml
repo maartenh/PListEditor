@@ -15,35 +15,37 @@
   -->
 
 <idea-plugin version="2">
-  <name>PListEditor</name>
-  <description>A custom editor for Apple .plist files</description>
-  <version>0.6</version>
-  <vendor>Maarten Hazewinkel</vendor>
-  <idea-version since-build="109.94"/>
-  <!--suppress PluginXmlValidity -->
+    <name>PListEditor</name>
+    <description>A custom editor for Apple .plist files</description>
+    <version>0.6</version>
+    <vendor>Maarten Hazewinkel</vendor>
+    <idea-version since-build="109.94"/>
+
+    <!--suppress PluginXmlValidity -->
     <depends>com.intellij.modules.objc</depends>
 
-  <application-components>
-      <component>
-        <interface-class>com.mac.hazewinkel.plist.fileTypes.PListFileTypeManager</interface-class>
-        <implementation-class>com.mac.hazewinkel.plist.fileTypes.impl.PListFileTypeManagerImpl</implementation-class>
-      </component>
-      <component>
-          <implementation-class>com.mac.hazewinkel.plist.fileTypes.NewPListFileTemplate</implementation-class>
-      </component>
-  </application-components>
+    <application-components>
+        <component>
+            <interface-class>com.mac.hazewinkel.plist.fileTypes.PListFileTypeManager</interface-class>
+            <implementation-class>com.mac.hazewinkel.plist.fileTypes.impl.PListFileTypeManagerImpl
+            </implementation-class>
+        </component>
+        <component>
+            <implementation-class>com.mac.hazewinkel.plist.fileTypes.NewPListFileTemplate</implementation-class>
+        </component>
+    </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
 
-  <extensions defaultExtensionNs="com.intellij">
-      <fileTypeFactory implementation="com.mac.hazewinkel.plist.fileTypes.impl.PListFileTypeManagerImpl" />
-      <fileEditorProvider implementation="com.mac.hazewinkel.plist.editor.impl.PListEditorProvider"/>
-      <fileDocumentManagerListener implementation="com.mac.hazewinkel.plist.editor.impl.PListSaveTrigger"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.mac.hazewinkel.plist.fileTypes.impl.PListFileTypeManagerImpl"/>
+        <fileEditorProvider implementation="com.mac.hazewinkel.plist.editor.impl.PListEditorProvider"/>
+        <fileDocumentManagerListener implementation="com.mac.hazewinkel.plist.editor.impl.PListSaveTrigger"/>
+    </extensions>
 </idea-plugin>
