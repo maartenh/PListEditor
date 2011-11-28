@@ -19,8 +19,9 @@
   <description>A custom editor for Apple .plist files</description>
   <version>0.6</version>
   <vendor>Maarten Hazewinkel</vendor>
-  <idea-version since-build="109.54"/>
-  <depends>com.intellij.modules.platform</depends>
+  <idea-version since-build="109.94"/>
+  <!--suppress PluginXmlValidity -->
+    <depends>com.intellij.modules.objc</depends>
 
   <application-components>
       <component>

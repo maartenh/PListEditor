@@ -16,6 +16,7 @@ DONE 2011-11-01.
 
 limit plugin to AppCode only.
 requires OC-2378.
+DONE 2011-11-28.
 
 retain node expansion status across editor invocations
 
