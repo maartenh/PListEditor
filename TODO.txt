@@ -1,4 +1,3 @@
-
 new plist file action
 DONE 2011-11-05. Implemented simply as a template.
 
